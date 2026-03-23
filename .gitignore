@@ -7,3 +7,4 @@ package-lock.json
 results/speedtest_telemetry.db
 results/speedtest_telemetry.db-shm
 results/speedtest_telemetry.db-wal
+results/telemtry_settings-php
