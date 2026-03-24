@@ -203,7 +203,7 @@ function insertSpeedtestUser($userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $u
         $stmt = $pdo->prepare(
             'INSERT INTO SpeedTestResult
         (UserId, Ip, IspInfo, Extra, Ua, Lang, Dl, Ul, Ping, Jitter, Log)
-        VALUES (?,?,?,?,?,?,?,?,?,?)'
+        VALUES (?,?,?,?,?,?,?,?,?,?,?)'
         );
         $stmt->execute([
             $userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log
