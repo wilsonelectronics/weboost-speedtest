@@ -249,9 +249,9 @@ function getSpeedtestUserById($id,$returnExceptionOnError = false)
     try {
         $stmt = $pdo->prepare(
             'SELECT
-            id, timestamp, ip, ispinfo, ua, lang, dl, ul, ping, jitter, log, extra
-            FROM speedtest_users
-            WHERE id = :id'
+            Id, UserId, CreatedAt, Ip, IspInfo, Ua, Lang, Dl, Ul, Ping, Jitter, Log, Extra
+            FROM SpeedTestResult
+            WHERE Id = :id'
         );
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -292,9 +292,9 @@ function getLatestSpeedtestUsers()
 		
 		if('mssql' === $db_type) {$sql .= ' TOP(100) ';}
 		
-		$sql .= ' id, timestamp, ip, ispinfo, ua, lang, dl, ul, ping, jitter, log, extra
-            FROM speedtest_users
-            ORDER BY timestamp DESC ';
+		$sql .= ' Id, UserId, CreatedAt, Ip, IspInfo, Ua, Lang, Dl, Ul, Ping, Jitter, Log, Extra
+            FROM SpeedTestResult
+            ORDER BY CreatedAt DESC ';
 			
 		if('mssql' !== $db_type) {$sql .= ' LIMIT 100 ';}
 		
