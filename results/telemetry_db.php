@@ -189,7 +189,7 @@ function isObfuscationEnabled()
 /**
  * @return string|false returns the id of the inserted column or false on error if returnErrorMessage is false or a error message if returnErrorMessage is true
  */
-function insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $returnExceptionOnError = false)
+function insertSpeedtestUser($userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $returnExceptionOnError = false)
 {
     $pdo = getPdo();
     if (!($pdo instanceof PDO)) {
@@ -201,12 +201,12 @@ function insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping,
 
     try {
         $stmt = $pdo->prepare(
-            'INSERT INTO speedtest_users
-        (ip,ispinfo,extra,ua,lang,dl,ul,ping,jitter,log)
+            'INSERT INTO SpeedTestResult
+        (UserId, Ip, IspInfo, Extra, Ua, Lang, Dl, Ul, Ping, Jitter, Log)
         VALUES (?,?,?,?,?,?,?,?,?,?)'
         );
         $stmt->execute([
-            $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log
+            $userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log
         ]);
         $id = $pdo->lastInsertId();
     } catch (Exception $e) {

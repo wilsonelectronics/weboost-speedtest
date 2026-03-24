@@ -123,7 +123,9 @@ if(!isset($db_type) || $db_type != 'postgresql'){
 	$dl=$ul=$ping=$jitter="";
 	$log="";
 
-	$insertResult = insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, true);
+	$userId = "493cd8e1-32f0-413a-8a4f-a38b054f5784";
+
+	$insertResult = insertSpeedtestUser($userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, true);
 	
 	if(($insertResult instanceof Exception)){
 		echo $failed;
