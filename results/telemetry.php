@@ -4,6 +4,7 @@ require 'telemetry_settings.php';
 require_once 'telemetry_db.php';
 require_once '../backend/getIP_util.php';
 
+$userId = $_COOKIE['userId'];
 $ip = getClientIp();
 $ispinfo = $_POST['ispinfo'];
 $extra = $_POST['extra'];
@@ -35,7 +36,7 @@ header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, s-maxage=
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
-$id = insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log);
+$id = insertSpeedtestUser($userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log);
 if (false === $id) {
     exit(1);
 }
