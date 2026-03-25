@@ -21,9 +21,15 @@ var SPEEDTEST_SERVERS=[
 	//add other servers here, comma separated
 ];
 
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('user');
+
 //INITIALIZE SPEEDTEST
 var s=new Speedtest(); //create speed test object
 s.setParameter("telemetry_level","basic"); //enable telemetry
+if (userId != null) {
+	s.setParameter("user_id", userId)
+}
 
 //SERVER AUTO SELECTION
 function initServers(){

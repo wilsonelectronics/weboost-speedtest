@@ -701,7 +701,7 @@ function sendTelemetry(done) {
 		console.log("TELEMETRY ERROR " + xhr.status);
 		done(null);
 	};
-	xhr.open("POST", settings.url_telemetry + url_sep(settings.url_telemetry) + (settings.mpot ? "cors=true&" : "") + "r=" + Math.random(), true);
+	xhr.open("POST", settings.url_telemetry + url_sep(settings.url_telemetry) + (settings.mpot ? "cors=true&" : "") + "r=" + Math.random() + (settings.user_id ? `&user=${settings.user_id}` : ""), true);
 	const telemetryIspInfo = {
 		processedString: clientIp,
 		rawIspInfo: typeof ispInfo === "object" ? ispInfo : ""
