@@ -11,8 +11,8 @@ function I(i){return document.getElementById(i);}
 //LIST OF TEST SERVERS. See documentation for details if needed
 var SPEEDTEST_SERVERS=[
 	{	//this server doesn't actually exist, remove it
-		name:"weBoost Server", //user friendly name for the server
-		server:"//137.184.187.61:80/", //URL to the server. // at the beginning will be replaced with http:// or https:// automatically
+		name:"San Francisco", //user friendly name for the server
+		server:"//137.184.187.61/", //URL to the server. // at the beginning will be replaced with http:// or https:// automatically
 		dlURL:"backend/garbage.php",  //path to download test on this server (garbage.php or replacement)
 		ulURL:"backend/empty.php",  //path to upload test on this server (empty.php or replacement)
 		pingURL:"backend/empty.php",  //path to ping/jitter test on this server (empty.php or replacement)
@@ -392,10 +392,11 @@ function initUI(){
 		}
 	}
 </style>
-<title>LibreSpeed Example</title>
+<title>weBoost Speedtest</title>
 </head>
 <body onload="initServers()">
-<h1>LibreSpeed Example</h1>
+<img id="logo" style="padding-top:1rem;" src="https://assetsv2.wilsonelectronics.com/m/2a7015747dadddb0/original/webimage-weboost-logo.svg"/>
+<h1>Speed Test</h1>
 <div id="loading" class="visible">
 	<p id="message"><span class="loadCircle"></span>Selecting a server...</p>
 </div>
