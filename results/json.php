@@ -30,13 +30,13 @@ function format($d)
 function formatSpeedtestData($speedtest)
 {
     // format values for the image
-    $speedtest['dl'] = format($speedtest['dl']);
-    $speedtest['ul'] = format($speedtest['ul']);
-    $speedtest['ping'] = format($speedtest['ping']);
-    $speedtest['jitter'] = format($speedtest['jitter']);
-    $speedtest['timestamp'] = $speedtest['timestamp'];
+    $speedtest['Dl'] = format($speedtest['Dl']);
+    $speedtest['Ul'] = format($speedtest['Ul']);
+    $speedtest['Ping'] = format($speedtest['Ping']);
+    $speedtest['Jitter'] = format($speedtest['Jitter']);
+    $speedtest['CreatedAt'] = $speedtest['CreatedAt'];
 
-    $ispinfo = json_decode($speedtest['ispinfo'], true)['processedString'];
+    $ispinfo = json_decode($speedtest['IspInfo'], true)['processedString'];
     $dash = strpos($ispinfo, '-');
     if ($dash !== false) {
         $ispinfo = substr($ispinfo, $dash + 2);
@@ -48,7 +48,7 @@ function formatSpeedtestData($speedtest)
         $ispinfo = '';
     }
 
-    $speedtest['ispinfo'] = $ispinfo;
+    $speedtest['IspInfo'] = $ispinfo;
 
     return $speedtest;
 }
@@ -58,5 +58,5 @@ if (!is_array($speedtest)) {
     echo '{}';
 } else {
     $speedtest = formatSpeedtestData($speedtest);
-    echo json_encode(array('timestamp'=>$speedtest['timestamp'],'download'=>$speedtest['dl'],'upload'=>$speedtest['ul'],'ping'=>$speedtest['ping'],'jitter'=>$speedtest['jitter'],'ispinfo'=>$speedtest['ispinfo']));
+    echo json_encode(array('timestamp'=>$speedtest['CreatedAt'],'download'=>$speedtest['Dl'],'upload'=>$speedtest['Ul'],'ping'=>$speedtest['Ping'],'jitter'=>$speedtest['Jitter'],'ispinfo'=>$speedtest['IspInfo']));
 }

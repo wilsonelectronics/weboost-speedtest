@@ -49,13 +49,13 @@ function format($d)
 function formatSpeedtestDataForImage($speedtest)
 {
     // format values for the image
-    $speedtest['dl'] = format($speedtest['dl']);
-    $speedtest['ul'] = format($speedtest['ul']);
-    $speedtest['ping'] = format($speedtest['ping']);
-    $speedtest['jitter'] = format($speedtest['jitter']);
-    $speedtest['timestamp'] = $speedtest['timestamp'];
+    $speedtest['Dl'] = format($speedtest['Dl']);
+    $speedtest['Ul'] = format($speedtest['Ul']);
+    $speedtest['Ping'] = format($speedtest['Ping']);
+    $speedtest['Jitter'] = format($speedtest['Jitter']);
+    $speedtest['CreatedAt'] = $speedtest['CreatedAt'];
 
-    $ispinfo = json_decode($speedtest['ispinfo'], true)['processedString'];
+    $ispinfo = json_decode($speedtest['IspInfo'], true)['processedString'];
     $dash = strpos($ispinfo, '-');
     if ($dash !== false) {
         $ispinfo = substr($ispinfo, $dash + 2);
@@ -67,7 +67,7 @@ function formatSpeedtestDataForImage($speedtest)
         $ispinfo = '';
     }
 
-    $speedtest['ispinfo'] = $ispinfo;
+    $speedtest['IspInfo'] = $ispinfo;
 
     return $speedtest;
 }
@@ -81,12 +81,12 @@ function drawImage($speedtest)
 {
     // format values for the image
     $data = formatSpeedtestDataForImage($speedtest);
-    $dl = $data['dl'];
-    $ul = $data['ul'];
-    $ping = $data['ping'];
-    $jit = $data['jitter'];
-    $ispinfo = $data['ispinfo'];
-    $timestamp = $data['timestamp'];
+    $dl = $data['Dl'];
+    $ul = $data['Ul'];
+    $ping = $data['Ping'];
+    $jit = $data['Jitter'];
+    $ispinfo = $data['IspInfo'];
+    $timestamp = $data['CreatedAt'];
 
     // initialize the image
     $SCALE = 1.25;

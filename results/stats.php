@@ -109,44 +109,44 @@ header('Pragma: no-cache');
                         </tr>
                         <tr>
                             <th>Date and time</th>
-                            <td><?= htmlspecialchars($speedtest['timestamp'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['CreatedAt'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                         <tr>
                             <th>IP and ISP Info</th>
                             <td>
-                                <?= htmlspecialchars($speedtest['ip'], ENT_HTML5, 'UTF-8') ?><br/>
-                                <?= htmlspecialchars($speedtest['ispinfo'], ENT_HTML5, 'UTF-8') ?>
+                                <?= htmlspecialchars($speedtest['Ip'], ENT_HTML5, 'UTF-8') ?><br/>
+                                <?= htmlspecialchars($speedtest['IspInfo'], ENT_HTML5, 'UTF-8') ?>
                             </td>
                         </tr>
                         <tr>
                             <th>User agent and locale</th>
-                            <td><?= htmlspecialchars($speedtest['ua'], ENT_HTML5, 'UTF-8') ?><br/>
-                                <?= htmlspecialchars($speedtest['lang'], ENT_HTML5, 'UTF-8') ?>
+                            <td><?= htmlspecialchars($speedtest['Ua'], ENT_HTML5, 'UTF-8') ?><br/>
+                                <?= htmlspecialchars($speedtest['Lang'], ENT_HTML5, 'UTF-8') ?>
                             </td>
                         </tr>
                         <tr>
                             <th>Download speed</th>
-                            <td><?= htmlspecialchars($speedtest['dl'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['Dl'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                         <tr>
                             <th>Upload speed</th>
-                            <td><?= htmlspecialchars($speedtest['ul'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['Ul'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                         <tr>
                             <th>Ping</th>
-                            <td><?= htmlspecialchars($speedtest['ping'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['Ping'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                         <tr>
                             <th>Jitter</th>
-                            <td><?= htmlspecialchars($speedtest['jitter'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['Jitter'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                         <tr>
                             <th>Log</th>
-                            <td><?= htmlspecialchars($speedtest['log'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['Log'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                         <tr>
                             <th>Extra info</th>
-                            <td><?= htmlspecialchars($speedtest['extra'], ENT_HTML5, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($speedtest['Extra'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                     </table>
                     <?php
