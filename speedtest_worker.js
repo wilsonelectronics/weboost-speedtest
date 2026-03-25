@@ -65,7 +65,8 @@ let settings = {
 	telemetry_level: 0, // 0=disabled, 1=basic (results only), 2=full (results and timing) 3=debug (results+log)
 	url_telemetry: "results/telemetry.php", // path to the script that adds telemetry data to the database
 	telemetry_extra: "", //extra data that can be passed to the telemetry through the settings
-    forceIE11Workaround: false //when set to true, it will force the IE11 upload test on all browsers. Debug only
+    forceIE11Workaround: false, //when set to true, it will force the IE11 upload test on all browsers. Debug only
+	user_id: "" //id of the weboost app user
 };
 
 let xhr = null; // array of currently active xhr requests
