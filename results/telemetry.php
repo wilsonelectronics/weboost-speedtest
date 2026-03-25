@@ -4,7 +4,8 @@ require 'telemetry_settings.php';
 require_once 'telemetry_db.php';
 require_once '../backend/getIP_util.php';
 
-$userId = $_POST['user'];
+$userId = $_GET['user'];
+echo `<script>console.log($userId);</script>`;
 $ip = getClientIp();
 $ispinfo = $_POST['ispinfo'];
 $extra = $_POST['extra'];
