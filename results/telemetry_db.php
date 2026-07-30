@@ -213,6 +213,13 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
         return false;
     }
 
+    if (!is_array($row) || !isset($row['Id'])) {
+        if ($returnExceptionOnError) {
+            return new Exception("No User found in [dbo].[User] for email '" . $email . "'");
+        }
+        return false;
+    }
+
     $userId = $row['Id'];
 
     try {
