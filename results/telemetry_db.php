@@ -213,7 +213,7 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
         return false;
     }
 
-    $userId = $row['Id'];
+    $userId = $row['id'];
 
     try {
         $stmt = $pdo->prepare(
