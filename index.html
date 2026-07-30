@@ -10,14 +10,22 @@ function I(i){return document.getElementById(i);}
 
 //LIST OF TEST SERVERS. See documentation for details if needed
 var SPEEDTEST_SERVERS=[
-	{	//this server doesn't actually exist, remove it
+	{	
 		name:"San Francisco", //user friendly name for the server
-		server:"//137.184.187.61/", //URL to the server. // at the beginning will be replaced with http:// or https:// automatically
+		server:"//134.199.233.87/", //URL to the server. // at the beginning will be replaced with http:// or https:// automatically
 		dlURL:"backend/garbage.php",  //path to download test on this server (garbage.php or replacement)
 		ulURL:"backend/empty.php",  //path to upload test on this server (empty.php or replacement)
 		pingURL:"backend/empty.php",  //path to ping/jitter test on this server (empty.php or replacement)
 		getIpURL:"backend/getIP.php"  //path to getIP on this server (getIP.php or replacement)
 	},
+	{
+		name:"New York", //user friendly name for the server
+		server:"//104.248.50.106/", //URL to the server. // at the beginning will be replaced with http:// or https:// automatically
+		dlURL:"backend/garbage.php",  //path to download test on this server (garbage.php or replacement)
+		ulURL:"backend/empty.php",  //path to upload test on this server (empty.php or replacement)
+		pingURL:"backend/empty.php",  //path to ping/jitter test on this server (empty.php or replacement)
+		getIpURL:"backend/getIP.php"  //path to getIP on this server (getIP.php or replacement)
+	}
 	//add other servers here, comma separated
 ];
 
@@ -447,7 +455,7 @@ function initUI(){
 </div>
 <div id="privacyPolicy" style="display:none">
     <h2>Privacy Policy</h2>
-    <p>This HTML5 speed test server is configured with telemetry enabled if a user id has been specified.</p>
+    <p>This HTML5 speed test server is configured with telemetry enabled if a user's email has been specified.</p>
     <h4>What data we collect</h4>
     <p>
         At the end of the test, the following data is collected and stored:
