@@ -194,7 +194,7 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
     $pdo = getPdo();
     if (!($pdo instanceof PDO)) {
 		if($returnExceptionOnError){
-			return new Exception("Failed to get database connection object");
+			return new Exception("Failed to get database connection object: " . getPdo(true));
 		}
         return false;
     }

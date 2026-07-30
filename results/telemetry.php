@@ -36,7 +36,11 @@ header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, s-maxage=
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
-$id = insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log);
+$id = insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, true);
+if ($id instanceof Exception) {
+    error_log('telemetry.php insertSpeedtestUser failed: '.$id->getMessage());
+    exit(1);
+}
 if (false === $id) {
     exit(1);
 }
