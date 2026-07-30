@@ -201,7 +201,7 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
 
     try {
         $stmt = $pdo->prepare(
-            'SELECT Id FROM [dbo].[User] WHERE Email = :email'
+            'SELECT Id FROM User WHERE Email = :email'
         );
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
@@ -213,11 +213,11 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
         return false;
     }
 
-    $userId = $row['id'];
+    $userId = $row['Id'];
 
     try {
         $stmt = $pdo->prepare(
-            'INSERT INTO [dbo].[SpeedTestResult]
+            'INSERT INTO SpeedTestResult
         (UserId, Ip, IspInfo, Extra, Ua, Lang, Dl, Ul, Ping, Jitter, Log)
         VALUES (?,?,?,?,?,?,?,?,?,?,?)'
         );
@@ -266,7 +266,7 @@ function getSpeedtestUserById($id,$returnExceptionOnError = false)
         $stmt = $pdo->prepare(
             'SELECT
             Id, UserId, CreatedAt, Ip, IspInfo, Ua, Lang, Dl, Ul, Ping, Jitter, Log, Extra
-            FROM [dbo].[SpeedTestResult]
+            FROM SpeedTestResult
             WHERE Id = :id'
         );
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -309,7 +309,7 @@ function getLatestSpeedtestUsers()
 		if('mssql' === $db_type) {$sql .= ' TOP(100) ';}
 		
 		$sql .= ' Id, UserId, CreatedAt, Ip, IspInfo, Ua, Lang, Dl, Ul, Ping, Jitter, Log, Extra
-            FROM [dbo].[SpeedTestResult]
+            FROM SpeedTestResult
             ORDER BY CreatedAt DESC ';
 			
 		if('mssql' !== $db_type) {$sql .= ' LIMIT 100 ';}
