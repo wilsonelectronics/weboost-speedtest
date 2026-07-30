@@ -66,7 +66,7 @@ let settings = {
 	url_telemetry: "results/telemetry.php", // path to the script that adds telemetry data to the database
 	telemetry_extra: "", //extra data that can be passed to the telemetry through the settings
     forceIE11Workaround: false, //when set to true, it will force the IE11 upload test on all browsers. Debug only
-	user_id: "" //id of the weboost app user
+	email: "" //email of the weboost app user
 };
 
 let xhr = null; // array of currently active xhr requests
@@ -702,7 +702,7 @@ function sendTelemetry(done) {
 		console.log("TELEMETRY ERROR " + xhr.status);
 		done(null);
 	};
-	xhr.open("POST", settings.url_telemetry + url_sep(settings.url_telemetry) + (settings.mpot ? "cors=true&" : "") + "r=" + Math.random() + (settings.user_id != "" ? `&user=${settings.user_id}` : ""), true);
+	xhr.open("POST", settings.url_telemetry + url_sep(settings.url_telemetry) + (settings.mpot ? "cors=true&" : "") + "r=" + Math.random() + (settings.email != "" ? `&user=${settings.email}` : ""), true);
 	const telemetryIspInfo = {
 		processedString: clientIp,
 		rawIspInfo: typeof ispInfo === "object" ? ispInfo : ""

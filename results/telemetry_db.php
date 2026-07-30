@@ -189,7 +189,7 @@ function isObfuscationEnabled()
 /**
  * @return string|false returns the id of the inserted column or false on error if returnErrorMessage is false or a error message if returnErrorMessage is true
  */
-function insertSpeedtestUser($userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $returnExceptionOnError = false)
+function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $returnExceptionOnError = false)
 {
     $pdo = getPdo();
     if (!($pdo instanceof PDO)) {
@@ -198,6 +198,22 @@ function insertSpeedtestUser($userId, $ip, $ispinfo, $extra, $ua, $lang, $dl, $u
 		}
         return false;
     }
+
+    try {
+        $stmt = $pdo->prepare(
+            'SELECT Id FROM User WHERE Email = :email'
+        );
+        $stmt->bindValue(':email', $email, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+		if($returnExceptionOnError){
+			return $e;
+		}
+        return false;
+    }
+
+    $userId = $row['email'];
 
     try {
         $stmt = $pdo->prepare(

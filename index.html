@@ -22,13 +22,13 @@ var SPEEDTEST_SERVERS=[
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('user');
+const email = urlParams.get('user');
 
 //INITIALIZE SPEEDTEST
 var s=new Speedtest(); //create speed test object
 s.setParameter("telemetry_level","basic"); //enable telemetry
-if (userId != null) {
-	s.setParameter("user_id", userId)
+if (email != null) {
+	s.setParameter("email", email)
 }
 
 //SERVER AUTO SELECTION
