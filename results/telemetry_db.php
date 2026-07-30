@@ -203,7 +203,7 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
         $stmt = $pdo->prepare(
             'SELECT Id FROM User WHERE Email = :email'
         );
-        $stmt->bindValue(':email', $email, PDO::PARAM_INT);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
@@ -213,7 +213,7 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
         return false;
     }
 
-    $userId = $row['email'];
+    $userId = $row['Id'];
 
     try {
         $stmt = $pdo->prepare(
