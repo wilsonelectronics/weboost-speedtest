@@ -26,7 +26,7 @@ $servers = [
         "getIpURL" => "backend/getIP.php"
     ]
 ];
-$primary = getenv("SPEEDTEST_PRIMARY_REGION") ?: "west";
+$primary = $_SERVER["SPEEDTEST_PRIMARY_REGION"] ?? getenv("SPEEDTEST_PRIMARY_REGION") ?: "west";
 $ordered = $primary === "staging" ? [$servers["staging"]]
     : ($primary === "east" ? [$servers["east"], $servers["west"]]
         : [$servers["west"], $servers["east"]]);
