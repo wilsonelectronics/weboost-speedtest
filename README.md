@@ -1,14 +1,6 @@
-![LibreSpeed Logo](https://github.com/librespeed/speedtest/blob/master/.logo/logo3.png?raw=true)
+# weBoost SpeedTest
 
-# LibreSpeed
-
-No Flash, No Java, No Websocket, No Bullshit.
-
-This is a very lightweight speed test implemented in Javascript, using XMLHttpRequest and Web Workers.
-
-## Try it
-
-[Take a speed test](https://librespeed.org)
+A lightweight speed test service forked from [LibreSpeed](https://github.com/librespeed/speedtest).
 
 ## Compatibility
 
@@ -28,80 +20,60 @@ Works with mobile versions too.
 
 ![Screenrecording of a running Speedtest](https://speedtest.fdossena.com/mpot_v6.gif)
 
-## Server requirements
+## Deploying Changes
 
-* A reasonably fast web server with Apache 2 (nginx, IIS also supported)
-* PHP 5.4 or newer (other backends also available)
-* MariaDB or MySQL database to store test results (optional, Microsoft SQL Server, PostgreSQL and SQLite also supported)
-* A fast! internet connection
+Once you've contributed changes to either the master or staging branch, you must ssh into the droplet hosting the apache web server.
+* For staging, run `ssh root@speedtest-staging.weboost.com`
+* For master, run `ssh root@speedtest-<region>.weboost.com`. The current supported regions are east and west. You'll need to update both regions each time the master branch changes.
 
-## Installation
+To update the server: 
+* Pull the latest changes with `git pull`.
+* Copy the updated files over to the web server with `cp -r <files> /var/www/html/`.
+* * The only files that may **currently** need to be copied over are **favicon.ico, index.html, servers.php, speedtest.js, speedtest_worker.js, and the backend and results directories**.
+* * You do not need to copy all of them, only the ones that changed.
+* Restart it with `systemctl reload apache2`.
 
-Assuming you have PHP and a web server installed, the installation steps are quite simple.
+## Environment Variables
 
-1. Download the source code and extract it
-1. Copy the following files to your web server's shared folder (ie. /var/www/html/speedtest for Apache): index.html, speedtest.js, speedtest_worker.js, favicon.ico and the backend folder
-1. Optionally, copy the results folder too, and set up the database using the config file in it.
-1. Be sure your permissions allow execute (755).
-1. Visit YOURSITE/speedtest/index.html and voila!
+Environment variables live on the web server at `/etc/apache2/sites-enabled/000-default.conf`.
+To create a new environment variable, simply add `SetEnv <NAME> <value>` to a new line in that file.
+When you make changes to the environment variables, make sure you restart the server with `systemctl reload apache2`.
 
-### Installation Video
+## Creating a New Server/Region
 
-This video shows the installation process of a standalone LibreSpeed server: [Quick start installation guide for Debian 12](https://fdossena.com/?p=speedtest/quickstart_deb12.frag)
+To create a new speedtest server, the first thing you'll need to do is create a new droplet from a snapshot of an existing droplet. These instructions focus on the web server itself, not the code.
+* Go to the DigitalOcean project.
+* Select a speedtest droplet (east or west)
+* Go to **Backups & Snapshots**
+* Click **Take a Snapshot**
+* Click **Take Live Snapshot**. You do not need to change the name of the snapshot.
+* For adding a new region, locate the new snapshot, click the three dots to the right, click **Add to a Region**, and select the desired region.
+* In that same menu, click **Create Droplet**.
+* Choose the desired region.
+* Choose your desired droplet plan. The current production droplets use first basic, premium intel plan.
+* Select all ssh keys.
+* Give it a name, matching the conventions of the other droplets for consistency.
+* Make sure you select the correct project
+* Click **Create Droplet**
 
-More videos will be added later.
+Now that the droplet is created, ssh into it and follow the next steps:
+* Go to `/etc/apache2/sites-enabled/000-default.conf` and replace every mention of the previous region (e.g., "speedtest-east.weboost.com") to the new region, including the SPEEDTEST_PRIMARY_REGION environment variable.
+* Generate ssl certificates for the new server.
+* * Run `openssl genrsa -out speedtest-<region>.weboost.com.key 2048`.
+* * Run `chmod 600 speedtest-<region>.weboost.com.key`.
+* * Run `openssl req -new -key speedtest-<region>.weboost.com.key -out speedtest-<region>.weboost.com.csr`.
+* * Fill out the following form:
+* * * Countryname: `US`
+* * * State: `Utah`
+* * * Locality: `St George`
+* * * Organization: `Weboost`
+* * * Organizational Unit: `SpeedTest`
+* * * Common Name: `speedtest-<region>.weboost.com`
+* * * Leave the rest blank.
+* Move the key into the private folder using `mv ~/speedtest-<region>.weboost.com.key /etc/ssl/private/`.
+* Once the CSR files are processed by Digicert, get the .crt files to the web server's root folder (e.g., using scp).
+* Run `mv ~/DigiCertCA.crt /etc/ssl/certs/`.
+* Run `mv ~/speedtest-east_weboost_com.crt /etc/ssl/certs`.
+* Restart the server with `systemctl reload apache21` and you're done!
 
-## Android app
 
-A template to build an Android client for your LibreSpeed installation is available [here](https://github.com/librespeed/speedtest-android).
-
-## CLI client
-
-A command line client is available [here](https://github.com/librespeed/speedtest-cli).
-
-## .NET client
-
-A .NET client library is available in the [`LibreSpeed.NET`](https://github.com/Memphizzz/LibreSpeed.NET) repo ([NuGet](https://www.nuget.org/packages/LibreSpeed.NET)), maintained by [MemphiZ](https://github.com/Memphizzz).
-
-## Development
-
-If you want to contribute or develop with LibreSpeed, see [DEVELOPMENT.md](DEVELOPMENT.md) for information about using npm for development tasks, linting, and formatting.
-
-## Docker
-
-A docker image is available on [GitHub](https://github.com/librespeed/speedtest/pkgs/container/speedtest), check our [docker documentation](doc_docker.md) for more info about it.
-The image is built every week to include an updated version of the ipinfo-DB used for ISP detection. Also this ensures, that the latest security patches in PHP are installed. Therefore we recommend to use the `latest` image.
-
-## Go backend
-
-A Go implementation is available in the [`speedtest-go`](https://github.com/librespeed/speedtest-go) repo, maintained by [Maddie Zhan](https://github.com/maddie).
-
-## Rust backend
-
-A Rust implementation is available in the [`speedtest-rust`](https://github.com/librespeed/speedtest-rust) repo, maintained by [Sudo Dios](https://github.com/sudodios).
-
-## Node.js backend
-
-A partial Node.js implementation is available in the `node` branch, developed by [dunklesToast](https://github.com/dunklesToast). It's not recommended to use at the moment.
-
-## Donate
-
-[![Donate with Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/fdossena/donate)
-[Donate with PayPal](https://www.paypal.me/sineisochronic)
-
-## License
-
-Copyright (C) 2016-2024 Federico Dossena
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/lgpl>.
