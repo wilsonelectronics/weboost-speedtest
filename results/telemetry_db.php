@@ -213,6 +213,13 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
         return false;
     }
 
+    if (!is_array($row) || !isset($row['Id'])) {
+        if ($returnExceptionOnError) {
+            return new Exception("No User found in [dbo].[User] for email '" . $email . "'");
+        }
+        return false;
+    }
+
     $userId = $row['Id'];
 
     try {
@@ -237,6 +244,61 @@ function insertSpeedtestUser($email, $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul
     }
 
     return $id;
+}
+
+/**
+ * Deletes every SpeedTestResult row belonging to the user with the given email.
+ *
+ * @param string $email
+ *
+ * @return int|false|Exception returns the number of deleted rows (0 if no user/results were found),
+ *                              or false/an Exception on error (based on returnExceptionOnError)
+ */
+function deleteSpeedtestResultsByEmail($email, $returnExceptionOnError = false)
+{
+    $pdo = getPdo();
+    if (!($pdo instanceof PDO)) {
+        if ($returnExceptionOnError) {
+            return new Exception("Failed to get database connection object: " . getPdo(true));
+        }
+        return false;
+    }
+
+    try {
+        $stmt = $pdo->prepare(
+            'SELECT Id FROM [dbo].[User] WHERE Email = :email'
+        );
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        if ($returnExceptionOnError) {
+            return $e;
+        }
+        return false;
+    }
+
+    if (!is_array($row) || !isset($row['Id'])) {
+        // No matching user, so there is nothing to delete.
+        return 0;
+    }
+
+    $userId = $row['Id'];
+
+    try {
+        $stmt = $pdo->prepare(
+            'DELETE FROM [dbo].[SpeedTestResult] WHERE UserId = :userId'
+        );
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    } catch (Exception $e) {
+        if ($returnExceptionOnError) {
+            return $e;
+        }
+        return false;
+    }
 }
 
 /**
