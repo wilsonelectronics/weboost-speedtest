@@ -115,9 +115,6 @@ function drawImage($speedtest)
     $FONT_TIMESTAMP = tryFont("OpenSans-Light");
     $FONT_TIMESTAMP_SIZE = 8 * $SCALE;
 
-    $FONT_WATERMARK = tryFont('OpenSans-Light');
-    $FONT_WATERMARK_SIZE = 8 * $SCALE;
-
     // configure text colors
     $TEXT_COLOR_LABEL = imagecolorallocate($im, 40, 40, 40);
     $TEXT_COLOR_PING_METER = imagecolorallocate($im, 170, 96, 96);
@@ -128,7 +125,6 @@ function drawImage($speedtest)
     $TEXT_COLOR_ISP = imagecolorallocate($im, 40, 40, 40);
     $SEPARATOR_COLOR = imagecolorallocate($im, 192, 192, 192);
     $TEXT_COLOR_TIMESTAMP = imagecolorallocate($im, 160, 160, 160);
-    $TEXT_COLOR_WATERMARK = imagecolorallocate($im, 160, 160, 160);
 
     // configure positioning or the different parts on the image
     $POSITION_X_PING = 125 * $SCALE;
@@ -159,7 +155,7 @@ function drawImage($speedtest)
     $POSITION_X_TIMESTAMP= 4 * $SCALE;
     $POSITION_Y_TIMESTAMP = 223 * $SCALE;
 
-    $POSITION_Y_WATERMARK = 223 * $SCALE;
+    $WATERMARK_HEIGHT = 14 * $SCALE;
 
     // configure labels
     $MBPS_TEXT = 'Mbit/s';
@@ -168,7 +164,6 @@ function drawImage($speedtest)
     $JIT_TEXT = 'Jitter';
     $DL_TEXT = 'Download';
     $UL_TEXT = 'Upload';
-    $WATERMARK_TEXT = 'LibreSpeed';
 
     // create text boxes for each part of the image
     $mbpsBbox = imageftbbox($FONT_MEASURE_SIZE_BIG, 0, $FONT_MEASURE, $MBPS_TEXT);
@@ -181,8 +176,16 @@ function drawImage($speedtest)
     $dlMeterBbox = imageftbbox($FONT_METER_SIZE_BIG, 0, $FONT_METER, $dl);
     $ulBbox = imageftbbox($FONT_LABEL_SIZE_BIG, 0, $FONT_LABEL, $UL_TEXT);
     $ulMeterBbox = imageftbbox($FONT_METER_SIZE_BIG, 0, $FONT_METER, $ul);
-    $watermarkBbox = imageftbbox($FONT_WATERMARK_SIZE, 0, $FONT_WATERMARK, $WATERMARK_TEXT);
-    $POSITION_X_WATERMARK = $WIDTH - $watermarkBbox[4] - 4 * $SCALE;
+
+    // logo watermark
+    $logo = imagecreatefrompng(__DIR__.'/weboost-logo.png');
+    imagealphablending($logo, true);
+    imagesavealpha($logo, true);
+    $logoWidth = imagesx($logo);
+    $logoHeight = imagesy($logo);
+    $WATERMARK_WIDTH = round($logoWidth * ($WATERMARK_HEIGHT / $logoHeight));
+    $POSITION_X_WATERMARK = $WIDTH - $WATERMARK_WIDTH - 4 * $SCALE;
+    $POSITION_Y_WATERMARK = $POSITION_Y_TIMESTAMP - $WATERMARK_HEIGHT + 2 * $SCALE;
 
     // put the parts together to draw the image
     imagefilledrectangle($im, 0, 0, $WIDTH, $HEIGHT, $BACKGROUND_COLOR);
@@ -209,7 +212,7 @@ function drawImage($speedtest)
     // timestamp
     imagefttext($im, $FONT_TIMESTAMP_SIZE, 0, $POSITION_X_TIMESTAMP, $POSITION_Y_TIMESTAMP, $TEXT_COLOR_TIMESTAMP, $FONT_TIMESTAMP, $timestamp);
     // watermark
-    imagefttext($im, $FONT_WATERMARK_SIZE, 0, $POSITION_X_WATERMARK, $POSITION_Y_WATERMARK, $TEXT_COLOR_WATERMARK, $FONT_WATERMARK, $WATERMARK_TEXT);
+    imagecopyresampled($im, $logo, $POSITION_X_WATERMARK, $POSITION_Y_WATERMARK, 0, 0, $WATERMARK_WIDTH, $WATERMARK_HEIGHT, $logoWidth, $logoHeight);
 
     // send the image to the browser
     header('Content-Type: image/png');
