@@ -28,6 +28,6 @@ $servers = [
 ];
 $primary = getenv("SPEEDTEST_PRIMARY_REGION") ?: "west";
 $ordered = $primary === "staging" ? [$servers["staging"]]
-    : $primary === "east" ? [$servers["east"], $servers["west"]]
-    : [$servers["west"], $servers["east"]];
+    : ($primary === "east" ? [$servers["east"], $servers["west"]]
+        : [$servers["west"], $servers["east"]]);
 echo json_encode($ordered);
