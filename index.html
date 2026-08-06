@@ -189,6 +189,36 @@ function initUI(){
 	I("jitText").textContent="";
 	I("ip").textContent="";
 }
+function submitDataRemoval(){
+	var email=I("deleteEmailInput").value.trim();
+	var status=I("deleteEmailStatus");
+	var btn=I("deleteEmailBtn");
+	if(!email){
+		status.textContent="Please enter an email address.";
+		return;
+	}
+	btn.disabled=true;
+	status.textContent="Submitting request...";
+	var xhr=new XMLHttpRequest();
+	xhr.open("POST","results/delete_by_email.php",true);
+	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xhr.onload=function(){
+		btn.disabled=false;
+		var response=null;
+		try{ response=JSON.parse(xhr.responseText); }catch(e){}
+		if(response&&response.success){
+			status.textContent="Your data has been deleted.";
+			I("deleteEmailInput").value="";
+		}else{
+			status.textContent=(response&&response.error)?response.error:"Something went wrong. Please try again.";
+		}
+	};
+	xhr.onerror=function(){
+		btn.disabled=false;
+		status.textContent="Something went wrong. Please try again.";
+	};
+	xhr.send("email="+encodeURIComponent(email));
+}
 </script>
 <style type="text/css">
 	html,body{
@@ -447,7 +477,7 @@ function initUI(){
 </div>
 <div id="privacyPolicy" style="display:none">
     <h2>Privacy Policy</h2>
-    <p>This HTML5 speed test server is configured with telemetry enabled if a user id has been specified.</p>
+    <p>This HTML5 speed test server is configured with telemetry enabled if an email connected to a weboost app account has been specified.</p>
     <h4>What data we collect</h4>
     <p>
         At the end of the test, the following data is collected and stored:
@@ -478,8 +508,10 @@ function initUI(){
     </p>
     <h4>Data removal</h4>
     <p>
-        If you want to have your information deleted, you need to provide either the ID of the test or your IP address. This is the only way to identify your data, without this information we won't be able to comply with your request.<br/><br/>
-        Contact this email address for all deletion requests: <a href="mailto:PUT@YOUR_EMAIL.HERE">TO BE FILLED BY DEVELOPER</a>.
+        If you want to have your information deleted, provide the email used for your Weboost App account below.<br/><br/>
+        <input type="email" id="deleteEmailInput" placeholder="you@example.com" />
+        <button type="button" id="deleteEmailBtn" onclick="submitDataRemoval()">Delete my data</button><br/><br/>
+        <span id="deleteEmailStatus"></span>
     </p>
     <br/><br/>
     <div class="closePrivacyPolicy">
