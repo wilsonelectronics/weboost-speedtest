@@ -30,6 +30,12 @@ function initServers(){
         s.selectServer(function(server){
             if(server!=null){ //at least 1 server is available
                 I("loading").className="hidden"; //hide loading message
+                //default to the primary (first-listed) server instead of the fastest ping, unless it's down
+                var primary=SPEEDTEST_SERVERS[0];
+                if(primary.pingT!=-1){
+                    server=primary;
+                    s.setSelectedServer(server);
+                }
                 //populate server list for manual selection
                 for(var i=0;i<SPEEDTEST_SERVERS.length;i++){
                     if(SPEEDTEST_SERVERS[i].pingT==-1) continue;
